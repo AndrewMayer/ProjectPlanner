@@ -1,18 +1,12 @@
-import React, { Component } from "react";
-import Header from "./Components/Header";
-import ProjectFields from "./Components/ProjectFields";
-import ProjectHead from "./Components/ProjectHead";
-import Container from "react-bootstrap/Container";
-//import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/Button";
-//import Alert from "react-bootstrap/Alert";
-//import { FaCog } from "react-icons/fa";
-//import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { Component } from 'react';
+import { Container, Col, Row } from 'react-bootstrap';
+import 'react-datepicker/dist/react-datepicker.css';
 
-import "./App.css";
+import Header from './Header';
+import ProjectFields from './ProjectFields';
+import ProjectHead from './ProjectHead';
+
+import './App.css';
 
 class App extends Component {
   constructor(props) {
@@ -25,21 +19,21 @@ class App extends Component {
     // this.state = startState;
 
     this.state = {
-      name: "",
-      start: "",
-      finish: "",
-      startErrorMsg: "",
-      finishErrorMsg: "",
-      errMessage: ""
+      name: '',
+      start: '',
+      finish: '',
+      startErrorMsg: '',
+      finishErrorMsg: '',
+      errMessage: ''
     };
   }
 
   componentDidMount() {
-    fetch("/api/projects/5c73478fb7d151384c46798b", {
-      method: "GET",
+    fetch('/api/projects/5c73478fb7d151384c46798b', {
+      method: 'GET',
       headers: {
-        Accept: "application/x-www-form-urlencoded",
-        "Content-Type": "x-www-form-urlencoded"
+        Accept: 'application/x-www-form-urlencoded',
+        'Content-Type': 'x-www-form-urlencoded'
       }
     })
       .then(response => response.json())
@@ -50,14 +44,14 @@ class App extends Component {
             milestones: resJson.mstoneIds,
             projectId: resJson._id
           },
-          () => console.log("project _id: ", this.state.projectId)
+          () => console.log('project _id: ', this.state.projectId)
         );
       })
       .catch(err => {
         this.setState({
           errMessage: `Issue loading project: ${err}`
         });
-        console.log("Issue loading project: ", err);
+        console.log('Issue loading project: ', err);
       });
   }
 
@@ -66,7 +60,7 @@ class App extends Component {
   };
 
   setName = name => {
-    this.setState({ name: name });
+    this.setState({ name });
     console.log(name);
   };
 
@@ -93,11 +87,6 @@ class App extends Component {
                 projectId={this.state.projectId}
               />
             )}
-          </Col>
-        </Row>
-        <Row className="justify-content-center">
-          <Col md={2} sm={3} xs={12}>
-            <Button variant="dark">Save Project</Button>
           </Col>
         </Row>
       </Container>

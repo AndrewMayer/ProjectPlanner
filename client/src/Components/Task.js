@@ -1,15 +1,12 @@
-import React, { Component } from "react";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Tooltip from "react-bootstrap/Tooltip";
-import { FaTrashAlt, FaArrowsAltV } from "react-icons/fa";
-import { MdAdd } from "react-icons/md";
-import { SortableHandle } from "react-sortable-hoc";
+import React, { Component } from 'react';
+import { Col, Row, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { FaTrashAlt, FaArrowsAltV } from 'react-icons/fa';
+import { MdAdd } from 'react-icons/md';
+import { SortableHandle } from 'react-sortable-hoc';
 
 const DragHandle = SortableHandle(() => (
   <span>
-    {" "}
+    {' '}
     <FaArrowsAltV />
   </span>
 ));
@@ -17,7 +14,7 @@ const DragHandle = SortableHandle(() => (
 class Task extends Component {
   state = {
     name: this.props.name,
-    hover: "hidden"
+    hover: 'hidden'
   };
 
   onNameChange = e => {
@@ -28,8 +25,8 @@ class Task extends Component {
     return (
       <div
         className="milestone highlight-fade"
-        onMouseEnter={() => this.setState({ hover: "visible" })}
-        onMouseLeave={() => this.setState({ hover: "hidden" })}
+        onMouseEnter={() => this.setState({ hover: 'visible' })}
+        onMouseLeave={() => this.setState({ hover: 'hidden' })}
       >
         <Row>
           <Col md={8}>

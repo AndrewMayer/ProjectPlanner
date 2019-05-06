@@ -1,70 +1,21 @@
-import React, { Component } from "react";
-//import { FaBeer } from 'react-icons/fa';
-import Milestone from "./Milestone";
-import Task from "./Task";
-import { MdAdd } from "react-icons/md";
+import React, { Component } from 'react';
+
+import Milestone from './Milestone';
+import Task from './Task';
+import { MdAdd } from 'react-icons/md';
 import {
   SortableContainer,
   SortableElement,
-  arrayMove,
-  SortableHandle
-} from "react-sortable-hoc";
+  arrayMove
+} from 'react-sortable-hoc';
+import { projectData } from '../data/projectData';
 
-const shortid = require("shortid");
-
-const project = {
-  Name: "Website Redesign",
-  Start: "1/5/2019",
-  End: "5/4/2019",
-  Units: "Days",
-  Milestones: [
-    {
-      Name: "Planning",
-      Units: 22,
-      Tasks: [
-        {
-          Name: "Kick-off meeting",
-          Units: 5
-        },
-        {
-          Name: "Project roadmap",
-          Units: 4
-        },
-        {
-          Name: "User stories",
-          Units: 10
-        }
-      ]
-    },
-    {
-      Name: "Design",
-      Units: 30,
-      Tasks: [
-        {
-          Name: "Design meeting",
-          Units: 5
-        },
-        {
-          Name: "Moodboards",
-          Units: 4
-        },
-        {
-          Name: "Wireframes",
-          Units: 10
-        },
-        {
-          Name: "Complete design",
-          Units: 10
-        }
-      ]
-    }
-  ]
-};
+const shortid = require('shortid');
 
 class ProjectFields extends Component {
   constructor(props) {
     super(props);
-    let newState = project;
+    let newState = projectData;
     newState.Milestones.forEach(ms => {
       ms.id = shortid.generate();
       ms.Tasks.forEach(task => {
@@ -84,7 +35,7 @@ class ProjectFields extends Component {
       return;
     }
     console.log(
-      "Moving MS: " + JSON.parse(JSON.stringify(this.state.Milestones[i]))
+      'Moving MS: ' + JSON.parse(JSON.stringify(this.state.Milestones[i]))
     );
 
     this.setState(state => {
@@ -93,10 +44,6 @@ class ProjectFields extends Component {
       newState.Milestones[i].Order = i - 1;
       newState.Milestones[i - 1].Order = i;
       newState.Milestones.sort((a, b) => a.Order - b.Order);
-      // newState.highlights = {
-      //   ['h-' + i]: true,
-      //   ['h-' + (i-1).toString()]: true,
-      // };
       return newState;
     });
   };
@@ -184,8 +131,8 @@ class ProjectFields extends Component {
   addTask = (i, j) => {
     //Create new blank task to be added at given index
     let newTask = {
-      Name: "",
-      Units: "",
+      Name: '',
+      Units: '',
       id: shortid.generate()
     };
 
@@ -197,66 +144,67 @@ class ProjectFields extends Component {
         j
       ).concat([newTask], state.Milestones[i].Tasks.slice(j));
 
-      newState.highlights = { ["h-" + i + "-" + j]: true };
+      newState.highlights = { ['h-' + i + '-' + j]: true };
       return newState;
     });
   };
 
   addMilestone = i => {
-    console.log("add index: ", i);
+    console.log('add index: ', i);
     //Create new blank task to be added at given index
     let newMilestone = {
-      Name: "",
-      Units: "",
+      Name: '',
+      Units: '',
       id: shortid.generate(),
       Tasks: [
         {
-          Name: "",
-          Units: "",
+          Name: '',
+          Units: '',
           id: shortid.generate()
         }
       ]
     };
 
-    const reqBody = {
-      mstoneName: "Test milestone",
-      startDate: "12/2/2020",
-      length: 123,
-      description: "This is a test, this is only a test, calm the fuck down.",
-      owner: "The President",
-      ProjectId: "ak3928aldkjvma93",
-      tasks: [
-        {
-          taskName: "Task 1",
-          startDate: "12/3/2090",
-          taskLength: 33,
-          taskDescription: "Test task description"
-        },
-        {
-          taskName: "Task 2",
-          startDate: "12/3/2210",
-          taskLength: 12,
-          taskDescription: "Test task description TOO"
-        }
-      ]
-    };
+    const reqBody = {};
+    // const reqBody = {
+    //   mstoneName: 'Test milestone',
+    //   startDate: '12/2/2020',
+    //   length: 123,
+    //   description: 'This is a test, this is only a test.',
+    //   owner: 'The President',
+    //   ProjectId: 'ak3928aldkjvma93',
+    //   tasks: [
+    //     {
+    //       taskName: 'Task 1',
+    //       startDate: '12/3/2090',
+    //       taskLength: 33,
+    //       taskDescription: 'Test task description'
+    //     },
+    //     {
+    //       taskName: 'Task 2',
+    //       startDate: '12/3/2210',
+    //       taskLength: 12,
+    //       taskDescription: 'Test task description TOO'
+    //     }
+    //   ]
+    // };
 
-    fetch("/addmilestone", {
-      method: "POST",
+    fetch('/addmilestone', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(reqBody)
     })
       .then(response => response.json())
       .then(resJson => {
         if (!resJson.success) {
-          throw Error("Error adding milestone");
+          throw Error('Error adding milestone');
         }
       })
       .catch(err => {
-        console.log("Issue adding milestone: ", err);
+        console.log('Issue adding milestone: ', err);
         this.setState();
       });
 
@@ -267,7 +215,7 @@ class ProjectFields extends Component {
         [newMilestone],
         state.Milestones.slice(i)
       );
-      newState.highlights = { ["h-" + i]: true };
+      newState.highlights = { ['h-' + i]: true };
       return newState;
     });
   };
@@ -336,7 +284,7 @@ class ProjectFields extends Component {
               sortEndFunc={this.taskSortEnd}
             />
           ))}
-          <li style={{ paddingLeft: "80px", fontSize: ".5em" }}>
+          <li style={{ paddingLeft: '80px', fontSize: '.5em' }}>
             <button
               className="add-milestone"
               onClick={() => this.addMilestone(this.state.Milestones.length)}
@@ -356,7 +304,7 @@ const SortableList = SortableContainer(({ children }) => {
 
 const SortableMilestone = SortableElement(props => {
   return (
-    <li className={props.fading ? "highlight-fade" : ""}>
+    <li className={props.fading ? 'highlight-fade' : ''}>
       <Milestone
         name={props.name}
         units={props.units}
@@ -385,7 +333,7 @@ const SortableMilestone = SortableElement(props => {
           />
         ))}
       </SortableList>
-      <div style={{ paddingLeft: "100px" }}>
+      <div style={{ paddingLeft: '100px' }}>
         <button
           className="add-task"
           onClick={() => props.addTask(props.i, props.tasks.length)}
@@ -402,7 +350,5 @@ const SortableTask = SortableElement(props => (
     <Task {...props} />
   </li>
 ));
-
-const DragHandle = SortableHandle(() => <span>::</span>);
 
 export default ProjectFields;
